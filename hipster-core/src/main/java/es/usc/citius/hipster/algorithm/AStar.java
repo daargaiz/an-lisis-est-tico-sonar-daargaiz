@@ -102,7 +102,12 @@ public class AStar<A,S,C extends Comparable<C>,N extends HeuristicNode<A,S,C,N>>
          *
          * @return next visited state.
          */
+        @Override
         public N next() {
+            if (!hasNext()) {
+                throw new java.util.NoSuchElementException();
+            }
+
             // Get and remove the best node in the queue
             N current = takePromising();
             S currentState = current.state();
