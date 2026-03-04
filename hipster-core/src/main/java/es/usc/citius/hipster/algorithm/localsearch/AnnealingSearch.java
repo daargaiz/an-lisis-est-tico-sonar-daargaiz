@@ -58,7 +58,8 @@ public class AnnealingSearch<A, S, N extends HeuristicNode<A, S, Double, N>> ext
 	static final private Double DEFAULT_ALPHA = 0.9;
 	static final private Double DEFAULT_MIN_TEMP = 0.00001;
 	static final private Double START_TEMP = 1.;
-
+	private final Random random = new Random();
+	private final Random random2 = new Random();
 	private N initialNode;
 	private Double alpha;
 	private Double minTemp;
@@ -116,8 +117,7 @@ public class AnnealingSearch<A, S, N extends HeuristicNode<A, S, Double, N>> ext
 					for (N successor : nodeExpander.expand(node)) {
 						successors.add(successor);
 					}
-					Random randIndGen = new Random();
-					return successors.get(Math.abs(randIndGen.nextInt()) % successors.size());
+					int index = random.nextInt(successors.size());
 				}
 			};
 		}
@@ -154,7 +154,7 @@ public class AnnealingSearch<A, S, N extends HeuristicNode<A, S, Double, N>> ext
 				for (int i = 0; i < 100; i++) {
 					N randSuccessor = successorFinder.estimate(currentNode, nodeExpander);
 					Double score = randSuccessor.getScore();
-					if (acceptanceProbability.compute(bestScore, score, curTemp) > Math.random()) {
+					if (acceptanceProbability.compute(bestScore, score, curTemp) > random2) {
 						newNode = randSuccessor;
 						bestScore = score;
 					}
